@@ -96,7 +96,7 @@ const CreditCard = (props) => {
         sliderTitle='Срок кредита'
         minValue={sliderDaysMin}
         maxValue={sliderDaysMax}
-        step={sliderStep}
+        step={sliderDaysStep}
         onSliderValueChange={onDateValueChanged}
         value={creditLength}
       />

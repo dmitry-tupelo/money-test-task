@@ -111,6 +111,7 @@ export default function App() {
                     sliderStepAfterBreaking={500}
                     sliderDaysMin={3}
                     sliderDaysMax={14}
+                    sliderDaysStep={1}
                 />
               </TabView.Item>
               <TabView.Item style={{width: '100%'}}>
