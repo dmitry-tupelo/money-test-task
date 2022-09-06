@@ -8,13 +8,12 @@ const AppHeader = () => {
             <View style={styles.usernameWrapper}>
                 <Text style={styles.username}>Дмитрий Петровский</Text>
             </View>
-            <Button
-            title="Обновить"
-            style={styles.refreshButton}
+            <TouchableOpacity
+            style={styles.refreshButtonWrapper}
             onPress={() => {
                 console.log('Updated')
             }}
-            />
+            ><Text style={styles.refreshButton}>Обновить</Text></TouchableOpacity>
         </View>
     )
 }
@@ -31,12 +30,17 @@ const styles = StyleSheet.create({
     },
     username: {
         color: '#fff',
-        fontSize: 16
+        fontSize: 16,
     },
-    refreshButton: {
-        borderWidth: 1,
+    refreshButtonWrapper: {
+        borderWidth: 2,
+        borderColor: '#fff',
         borderRadius: 8,
         color: '#fff',
+        padding: 10,
+    },
+    refreshButton: {
+        color: '#fff'
     }
 })
 

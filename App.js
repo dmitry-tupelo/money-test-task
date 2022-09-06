@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, useWindowDimensions, TouchableOpacity} from 'react-native';
-import { TabView } from 'react-native-tab-view';
+import {StyleSheet, View, SafeAreaView } from 'react-native';
 
-import AppHeader from './src/components/AppHeader';
+import { Tab, Text, TabView } from '@rneui/themed';
+
 import CreditCard from './src/components/CreditCard';
+import AppHeader from "./src/components/AppHeader";
 
 const renderScene = ({ route }) => {
   switch (route.key) {
     case 'first':
       return <CreditCard
-      cardBackgroundColor={'#004a9d'} 
+      cardBackgroundColor={'#004a9d'}
       defaultCreditBalance={3000}
       defaultPercentage={100}
       defaultReturnBy={10}
@@ -43,68 +44,100 @@ const renderScene = ({ route }) => {
 
 
 export default function App() {
-  const layout = useWindowDimensions();
 
   const [index, setIndex] = useState(0);
 
-  const renderTabBar = ({navigationState, position}) => {
-    const inputRange = navigationState.routes.map((x, i) => i);
-  
-    return (
-      <View style={styles.tabBar}>
-        {navigationState.routes.map((route, i) => {
-          const opacity = position.interpolate({
-            inputRange,
-            outputRange: inputRange.map((inputIndex) =>
-              inputIndex === i ? 1 : 0.5
-            ),
-          });
-          
-          return (
-            <TouchableOpacity
-            key={i}
-            style={[
-              index === i && styles.activeTabItem,
-              styles.tabItem,
-            ]}
-              onPress={() => setIndex(i)}>
-              <Text
-                style={[ 
-                  index === i && styles.activeTabTextItem,
-                  styles.tabTextItem,
-                  opacity,
-                ]}>
-                  {route.title}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  };
-
-  const [routes] = useState([
-    { key: 'first', title: 'Швидко' },
-    { key: 'second', title: 'Надовго' },
-  ]);
-
   return (
-    <View style={styles.container}>
-      <AppHeader />
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        renderTabBar={renderTabBar}
-        initialLayout={{ width: layout.width }}
-      />
-    </View>
+      <SafeAreaView>
+        <AppHeader />
+        <View style={styles.container}>
+            <Tab
+                value={index}
+                onChange={(e) => setIndex(e)}
+                variant="primary"
+                containerStyle={{backgroundColor: '#004a9d', borderRadius: 25, padding: 5,}}
+                disableIndicator
+            >
+              <Tab.Item
+                  title="Быстро"
+                  titleStyle={(active) => ({
+                      color: active ? '#004a9d' : '#7fa4ce',
+                      borderRadius: active ? 10 : undefined,
+                      paddingVertical: 0,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                  })
+                  }
+                  containerStyle={(active) => ({
+                      backgroundColor: active ? '#fff' : undefined,
+                      borderRadius: 20,
+                      padding: 2,
+                      margin: 0,
+                      minHeight: 0
+                  })}
+              />
+                <Tab.Item
+                    title="Надолго"
+                    titleStyle={(active) => ({
+                        color: active ? '#004a9d' : '#7fa4ce',
+                        borderRadius: active ? 10 : undefined,
+                        paddingVertical: 0,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                    })
+                    }
+                    containerStyle={(active) => ({
+                        backgroundColor: active ? '#fff' : undefined,
+                        borderRadius: 20,
+                        padding: 2,
+                        margin: 0,
+                        minHeight: 0
+                    })}
+                />
+            </Tab>
+
+            <TabView value={index} onChange={setIndex} animationType="spring">
+              <TabView.Item style={{width: '100%'}}>
+                <CreditCard
+                    cardBackgroundColor={'#004a9d'}
+                    defaultCreditBalance={3000}
+                    defaultPercentage={100}
+                    defaultReturnBy={10}
+                    defaultCreditLength={10}
+                    sliderSumMin={400}
+                    sliderSumMax={10000}
+                    sliderSumBreakingValue={1000}
+                    sliderStepBeforeBreaking={200}
+                    sliderStepAfterBreaking={500}
+                    sliderDaysMin={3}
+                    sliderDaysMax={14}
+                />
+              </TabView.Item>
+              <TabView.Item style={{width: '100%'}}>
+                <CreditCard
+                    cardBackgroundColor={'#2b9730'}
+                    defaultCreditBalance={10000}
+                    defaultPercentage={100}
+                    defaultReturnBy={28}
+                    defaultCreditLength={28}
+                    sliderSumMin={10000}
+                    sliderSumMax={30000}
+                    sliderStep={1000}
+                    sliderDaysMin={28}
+                    sliderDaysMax={140}
+                    sliderDaysStep={14}
+                />
+              </TabView.Item>
+            </TabView>
+
+        </View>
+      </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 40,
+    marginHorizontal: 20,
     marginTop: 40,
     minHeight: '100%'
   },
@@ -134,13 +167,4 @@ const styles = StyleSheet.create({
   activeTabTextItem: {
     color: '#004a9d',
   },
-  separator: {
-    backgroundColor: '#fff',
-    height: 1,
-    marginVertical: 10,
-  },
-  sliderWrapper: {
-    marginVertical: 40,
-    marginHorizontal: 40,
-  }
 });
